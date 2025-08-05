@@ -33,10 +33,10 @@
             <v-btn variant="text" size="small" color="primary">¿Olvidaste tu contraseña?</v-btn>
           </div>
           <div class="d-flex flex-row gap-4 mt-2">
-            <v-btn color="primary" size="large" rounded="lg" @click="login" style="flex:1;">
+            <v-btn class="ma-2" color="primary" size="large" rounded="lg" @click="login" style="flex:1;">
               Iniciar Sesión
             </v-btn>
-            <v-btn class="ml-3" color="secondary" size="large" rounded="lg" @click="createAccount" style="flex:1;">
+            <v-btn class="ma-2" color="secondary" size="large" rounded="lg" @click="createAccount" style="flex:1;">
               Crear cuenta
             </v-btn>
           </div>

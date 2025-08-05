@@ -17,31 +17,29 @@ class UserController extends BaseController
     //Registro de usuario
     public function signUp(Request $request)
     {
-        $data = $request->all();
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8'
+            ]);
 
-        $company = Companies::create([
-            'company_name' => $data['company'],
-            'company_active' => 1,
-            'company_end_subscription' => date("Y-m-d 00:00:00", strtotime("+1 year +1 days"))
+            $user = new User();
+            $user->name = $validated['name'];
+            $user->email = $validated['email'];
+            $user->password = bcrypt($validated['password']);
+            $user->save();
 
-        ]);
-        
-        $companyID = Companies::where('company_name', $data['company'])->first();
-
-        
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'role_id' => 2,
-            'company_id' => $companyID['company_id']
-        ]);
-        
-        return response()->json([
-            'message' => 'Usuario Creado Correctamente',
-            'status' => 'OK',
-            'id' => $user->id
-        ]);
+            return response()->json([
+                'status' => 'OK',
+                'user' => $user
+            ], 201);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'ERROR',
+                'message' => $e->getMessage()
+            ], 400);
+        }
     }
 
     //Inicio de sesión

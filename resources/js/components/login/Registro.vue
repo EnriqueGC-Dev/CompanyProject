@@ -18,15 +18,8 @@
             color="primary"
             class="mb-4"
             required
-          ></v-text-field>
-          <v-text-field
-            label="Usuario"
-            v-model="username"
-            prepend-inner-icon="mdi-account-circle"
-            variant="outlined"
-            color="primary"
-            class="mb-4"
-            required
+            :error-messages="nameError"
+            @blur="validateName"
           ></v-text-field>
           <v-text-field
             label="Correo electrónico"
@@ -36,6 +29,8 @@
             color="primary"
             class="mb-4"
             required
+            :error-messages="emailError"
+            @blur="validateEmail"
           ></v-text-field>
           <v-text-field
             label="Contraseña"
@@ -46,13 +41,28 @@
             color="primary"
             class="mb-2"
             required
+            :error-messages="passwordError"
+            @blur="validatePassword"
           ></v-text-field>
+
+          <v-select
+            label="Selecciona tu plan"
+            v-model="selectedPlan"
+            :items="planOptions"
+            item-title="label"
+            item-value="value"
+            variant="outlined"
+            color="primary"
+            class="mb-4"
+            required
+          ></v-select>
+          
           <div class="d-flex flex-row gap-4 mt-2">
-            <v-btn color="primary" size="large" rounded="lg" @click="register" style="flex:1;">
-              Registrarse
-            </v-btn>
-            <v-btn class="ml-3" color="secondary" size="large" rounded="lg" @click="goToLogin" style="flex:1;">
+            <v-btn class="ma-2" color="secondary" size="large" rounded="lg" @click="goToLogin" style="flex:1;">
               Volver al login
+            </v-btn>
+            <v-btn class="ma-2" color="primary" size="large" rounded="lg" @click="register" style="flex:1;">
+              Registrarse
             </v-btn>
           </div>
         </v-form>
@@ -62,23 +72,71 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: 'Registro',
   data() {
     return {
       name: '',
-      username: '',
       email: '',
-      password: ''
+      password: '',
+      selectedPlan: null,
+      nameError: '',
+      emailError: '',
+      passwordError: ''
+    }
+  },
+  computed: {
+    planOptions() {
+      return [
+        { label: '1 año (50.00€)', value: '1' },
+        { label: '2 años (75.00€)', value: '2' },
+        { label: '3 años (100.00€)', value: '3' }
+      ];
     }
   },
   methods: {
-    register() {
-      // Aquí va la lógica de registro
+    validateName() {
+      this.nameError = this.name ? '' : 'El nombre es obligatorio';
     },
+    validateEmail() {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      this.emailError = regex.test(this.email) ? '' : 'Introduce un correo electrónico válido';
+    },
+    validatePassword() {
+      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      this.passwordError = regex.test(this.password)
+        ? ''
+        : 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo';
+    },
+    register() {
+      let credenciales = {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+      };
+      console.log(credenciales);
+      axios
+          .post("/api/user/signUp", credenciales)
+          .then((response) => {
+              alert("Usuario Creado Correctamente");
+              this.$emit("changeView");
+          })
+          .catch((error) => {
+              alert("Error al crear el Usuario");
+          });
+    },
+
     goToLogin() {
       this.$emit("changeView");
     }
   }
 }
 </script>
+
+<style scoped>
+.text-right {
+  text-align: right;
+}
+</style>
