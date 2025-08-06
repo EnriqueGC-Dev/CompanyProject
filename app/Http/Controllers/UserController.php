@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\WelcomeMail;
 
 use App\Models\User;
 use App\Models\Companies;
@@ -28,6 +30,9 @@ class UserController extends BaseController
             $user->email = $validated['email'];
             $user->password = bcrypt('M4r1a.25');
             $user->save();
+
+            // Enviar email de bienvenida
+            Mail::to($user->email)->send(new WelcomeMail($user));
 
             return response()->json([
                 'status' => 'OK',
@@ -97,5 +102,24 @@ class UserController extends BaseController
         }
 
         return response()->json($json);
+    }
+
+    // Verificar email por id
+    public function verifyEmail($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect('/')->with('status', 'Usuario no encontrado');
+        }
+
+        if ($user->email_verified_at === null) {
+            $user->email_verified_at = now();
+            $user->save();
+
+            return redirect('/')->with('status', 'Email verificado correctamente');
+        } else {
+            return redirect('/')->with('status', 'El email ya estaba verificado');
+        }
     }
 }
