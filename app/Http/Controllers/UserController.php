@@ -55,7 +55,16 @@ class UserController extends BaseController
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             $user = Auth::user();
-            
+
+            // Verificar que el email esté verificado
+            if ($user->email_verified_at === null) {
+                Auth::logout();
+                return response()->json([
+                    'status' => 'ERROR',
+                    'message' => 'Debes verificar tu correo electrónico antes de iniciar sesión.'
+                ], 403);
+            }
+
             return response()->json([
                 'status' => 'OK',
                 'server' => $_SERVER,

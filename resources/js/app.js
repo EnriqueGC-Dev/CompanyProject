@@ -15,6 +15,8 @@ import App from './components/App.vue';
 import Login from './components/login/Login.vue';
 import Registro from './components/login/Registro.vue';
 
+import Navbar from './components/navigation/Navbar.vue';
+import Sidebar from './components/navigation/Sidebar.vue';
 import Home from './components/home/Home.vue';
 
 //Router
@@ -54,6 +56,8 @@ app.component('App', App)
 app.component('Login', Login)
 app.component('Registro', Registro)
 
+app.component('Navbar', Navbar)
+app.component('Sidebar', Sidebar)
 app.component('Home', Home)
 
 app.mount('#app');

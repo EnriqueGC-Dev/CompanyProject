@@ -11,9 +11,9 @@
       <v-card-text>
         <v-form>
           <v-text-field
-            label="Usuario"
+            label="Email"
             v-model="username"
-            prepend-inner-icon="mdi-account"
+            prepend-inner-icon="mdi-email"
             variant="outlined"
             color="primary"
             class="mb-4"
@@ -33,11 +33,11 @@
             <v-btn variant="text" size="small" color="primary">¿Olvidaste tu contraseña?</v-btn>
           </div>
           <div class="d-flex flex-row gap-4 mt-2">
-            <v-btn class="ma-2" color="primary" size="large" rounded="lg" @click="login" style="flex:1;">
-              Iniciar Sesión
-            </v-btn>
             <v-btn class="ma-2" color="secondary" size="large" rounded="lg" @click="createAccount" style="flex:1;">
               Crear cuenta
+            </v-btn>
+            <v-btn class="ma-2" color="primary" size="large" rounded="lg" @click="login" style="flex:1;">
+              Iniciar Sesión
             </v-btn>
           </div>
         </v-form>
@@ -47,6 +47,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -56,7 +58,28 @@ export default {
   },
   methods: {
     login() {
-      // Aquí va la lógica de autenticación
+      let Self = this;
+        
+      let credenciales = {
+          email: this.username,
+          password: this.password,
+      };
+
+      axios
+          .post("/api/user/login", credenciales)
+          .then((response) => {
+              if(response.data.status == 'OK'){
+
+                  this.usuario = response.data[0];
+
+                  Self.$store.dispatch("setLogin", () => {
+                      Self.$router.push("/home").catch((err) => err);
+                  });
+                  }
+          })
+          .catch((error) => {
+              alert('Usuario o contraseña incorrectos')
+          });
     },
     createAccount() {
       this.$emit("changeView");

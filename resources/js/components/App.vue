@@ -1,13 +1,13 @@
 <template>
     <v-layout style="height: 100vh;" class="rounded rounded-md border ">
       
-      <Header @OpenCloseNavbar="OpenCloseNavbar"></Header>
-      <Navbar v-model="vShowNavbar"></Navbar>
+      <Navbar @OpenCloseNavbar="OpenCloseNavbar"></Navbar>
+      <Sidebar v-model="vShowNavbar"></Sidebar>
   
       <v-locale-provider>
         <v-main class="d-flex align-center justify-center mt-8">
           <v-container>
-            <router-view></router-view>       
+            <router-view></router-view>     
           </v-container>
         </v-main>
       </v-locale-provider>
