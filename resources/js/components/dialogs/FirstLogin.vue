@@ -1,4 +1,5 @@
 <template>
+  <v-layout class="d-flex align-center justify-center" style="height: 100vh; background: linear-gradient(135deg, #2196f3 0%, #21cbf3 100%);">
   <v-card class="pa-8" max-width="800" elevation="12" rounded="xl" style="backdrop-filter: blur(8px);">
     <div class="d-flex flex-column align-center mb-6">
       <v-avatar size="64" class="mb-2">
@@ -52,6 +53,7 @@
       </v-form>
     </v-card-text>
   </v-card>
+  </v-layout>
 </template>
 
 <script>

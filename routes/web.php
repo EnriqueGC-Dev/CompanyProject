@@ -8,6 +8,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/{any}', function () {
+    return view('welcome');
+});
+
 // API User
 Route::post('/api/user/signUp', [UserController::class, 'signUp']);
 Route::post('/api/user/login', [UserController::class, 'login']);

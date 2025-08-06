@@ -1,14 +1,17 @@
 <template>
-    <div>
-        <h1>Home Page</h1>
-    </div>
+     <v-row>
+        <v-col cols="4"><Home1></Home1></v-col>
+        <v-col cols="4"><Home1></Home1></v-col>
+        <v-col cols="4"><Home1></Home1></v-col>
+    </v-row>    
 </template>
 
 <script>
+
 export default {
-    name: 'Login',
+    
+    name: 'HomePage',
     mounted() {
-        console.log('Login component mounted');
     }
 };
 </script>

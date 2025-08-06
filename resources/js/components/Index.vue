@@ -40,7 +40,6 @@
                 Self.$router.push("/home").catch((err) => err);
             }
         });
-        console.log(this.authentication);
     },
 
     methods: {

@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import store from './store/store';
 import '@mdi/font/css/materialdesignicons.css';
+import { es } from 'vuetify/locale'
 
 // Vuetify
 import 'vuetify/styles'
@@ -17,9 +18,13 @@ import Registro from './components/login/Registro.vue';
 
 import Navbar from './components/navigation/Navbar.vue';
 import Sidebar from './components/navigation/Sidebar.vue';
+
 import Home from './components/home/Home.vue';
+import Home1 from './components/home/Home1.vue';
 
 import FirstLogin from './components/dialogs/FirstLogin.vue';
+
+import DateSelector from './components/specialComponents/DateSelector.vue';
 
 //Router
 import router from './router';
@@ -27,6 +32,11 @@ import router from './router';
 
 const app = createApp(Index)
 const vuetify = createVuetify({
+  locale: {
+    locale: 'es',
+    fallback: 'es',
+    messages: { es },
+  },
   icons: {
     defaultSet: 'mdi',
   },
@@ -58,9 +68,14 @@ app.component('App', App)
 app.component('Login', Login)
 app.component('Registro', Registro)
 
+app.component('FirstLogin', FirstLogin)
+
 app.component('Navbar', Navbar)
 app.component('Sidebar', Sidebar)
+
 app.component('Home', Home)
-app.component('FirstLogin', FirstLogin)
+app.component('Home1', Home1)
+
+app.component('DateSelector', DateSelector)
 
 app.mount('#app');

@@ -17,8 +17,6 @@ let store = createStore({
         LOGIN: async function (state, callback) {
             let response = await axios.get("/api/user/data");   
 
-            console.log(response.data);
-
             if (response.data.status == 'OK') {
                 state.authentication = true;
                 state.user_id = response.data.id;
