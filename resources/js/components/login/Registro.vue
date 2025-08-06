@@ -31,32 +31,7 @@
             required
             :error-messages="emailError"
             @blur="validateEmail"
-          ></v-text-field>
-          <v-text-field
-            label="Contraseña"
-            v-model="password"
-            type="password"
-            prepend-inner-icon="mdi-lock"
-            variant="outlined"
-            color="primary"
-            class="mb-2"
-            required
-            :error-messages="passwordError"
-            @blur="validatePassword"
-          ></v-text-field>
-
-          <v-select
-            label="Selecciona tu plan"
-            v-model="selectedPlan"
-            :items="planOptions"
-            item-title="label"
-            item-value="value"
-            variant="outlined"
-            color="primary"
-            class="mb-4"
-            required
-          ></v-select>
-          
+          ></v-text-field>        
           <div class="d-flex flex-row gap-4 mt-2">
             <v-btn class="ma-2" color="secondary" size="large" rounded="lg" @click="goToLogin" style="flex:1;">
               Volver al login
@@ -80,21 +55,12 @@ export default {
     return {
       name: '',
       email: '',
-      password: '',
-      selectedPlan: null,
       nameError: '',
       emailError: '',
-      passwordError: ''
     }
   },
   computed: {
-    planOptions() {
-      return [
-        { label: '1 año (50.00€)', value: '1' },
-        { label: '2 años (75.00€)', value: '2' },
-        { label: '3 años (100.00€)', value: '3' }
-      ];
-    }
+
   },
   methods: {
     validateName() {
@@ -104,17 +70,10 @@ export default {
       const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       this.emailError = regex.test(this.email) ? '' : 'Introduce un correo electrónico válido';
     },
-    validatePassword() {
-      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-      this.passwordError = regex.test(this.password)
-        ? ''
-        : 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un símbolo';
-    },
     register() {
       let credenciales = {
         name: this.name,
         email: this.email,
-        password: this.password,
       };
       console.log(credenciales);
       axios

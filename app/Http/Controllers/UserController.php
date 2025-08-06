@@ -20,20 +20,20 @@ class UserController extends BaseController
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:8'
+                'email' => 'required|string|email|max:255|unique:users'
             ]);
 
             $user = new User();
             $user->name = $validated['name'];
             $user->email = $validated['email'];
-            $user->password = bcrypt($validated['password']);
+            $user->password = bcrypt('M4r1a.25');
             $user->save();
 
             return response()->json([
                 'status' => 'OK',
                 'user' => $user
             ], 201);
+            
         } catch (Exception $e) {
             return response()->json([
                 'status' => 'ERROR',
