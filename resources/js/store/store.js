@@ -3,26 +3,28 @@ import { createStore } from 'vuex'
 import axios from 'axios';
 import App from '../components/App.vue';
 
-const store = createStore({
+let store = createStore({
     state () {
         return {
             authentication: false,
             user_id: null,
             user_name: null,
             user_mail: null,
-            company_id: null,
+            user_firstlogin: null,
         }
     },
     mutations: {
         LOGIN: async function (state, callback) {
             let response = await axios.get("/api/user/data");   
 
+            console.log(response.data);
+
             if (response.data.status == 'OK') {
                 state.authentication = true;
                 state.user_id = response.data.id;
                 state.user_name = response.data.name;
                 state.user_mail = response.data.email;
-                state.company_id = response.data.company_id;
+                state.user_firstlogin = response.data.first_log;
                 if (typeof callback == 'function') {
                     callback(true);
                 }
@@ -32,12 +34,32 @@ const store = createStore({
                 state.user_id = null;
                 state.user_name = null;
                 state.user_mail = null;
-                state.company_id = null;
+                state.user_firstlogin = null
+                
                 if (typeof callback == 'function') {
                     callback(false);
                 }
             }
+        },
+
+        LOGOUT: async function (state, callback) {
+
+                state.authentication = false; 
+                state.user_id = null;
+                state.user_name = null;
+                state.user_mail = null;
+                state.user_firstlogin = null
+                
+                if (typeof callback == 'function') {
+                    callback(false);
+                }
+
+        },
+
+        SET_USER_FIRSTLOGIN(state, value) {
+            state.user_firstlogin = value;
         }
+
     },
     actions: {
         setLogin: function (context, callback) {
@@ -48,7 +70,11 @@ const store = createStore({
                 .then(response => {
                     context.commit('LOGOUT');
                 });
+        },
+        user_firstlogin({ commit }, value) {
+            commit('SET_USER_FIRSTLOGIN', value);
         }
+
     },
     getters: {
         isUserLogged(state) {

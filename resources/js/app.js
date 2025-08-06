@@ -19,6 +19,8 @@ import Navbar from './components/navigation/Navbar.vue';
 import Sidebar from './components/navigation/Sidebar.vue';
 import Home from './components/home/Home.vue';
 
+import FirstLogin from './components/dialogs/FirstLogin.vue';
+
 //Router
 import router from './router';
 
@@ -59,5 +61,6 @@ app.component('Registro', Registro)
 app.component('Navbar', Navbar)
 app.component('Sidebar', Sidebar)
 app.component('Home', Home)
+app.component('FirstLogin', FirstLogin)
 
 app.mount('#app');
