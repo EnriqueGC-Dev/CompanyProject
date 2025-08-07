@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar :elevation="2">
+    <v-app-bar :elevation="1" class="bg-grey-lighten-3">
       <v-app-bar-nav-icon @click="OpenCloseNavbar()"></v-app-bar-nav-icon>
       <v-btn @click="ToInicio()">inicio</v-btn>
       <v-btn @click="ToProyectos()">proyectos</v-btn>

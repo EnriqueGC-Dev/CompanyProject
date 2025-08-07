@@ -1,10 +1,5 @@
 <template v-slot:prepend>
-    <v-navigation-drawer
-      class="deep-purple accent-4"
-      dark
-      permanent
-    >
-
+    <v-navigation-drawer permanent class="bg-grey-lighten-3" >
         <v-list density="compact" :elevation="3">
             <v-list-item class="mt-4" >
                 <img src="https://randomuser.me/api/portraits/men/24.jpg">                    
@@ -25,8 +20,8 @@
                 <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
 
-            <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-content >
+                <v-list-item-title >{{ item.title }}</v-list-item-title>
             </v-list-item-content>
             </v-list-item>
         </v-list>
