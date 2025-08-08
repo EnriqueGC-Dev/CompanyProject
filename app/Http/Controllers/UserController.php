@@ -21,14 +21,34 @@ class UserController extends BaseController
     {
         try {
             $validated = $request->validate([
+                'company' => 'required|string|max:255',
+                'companyCIF' => 'required|string|max:9',
+                'companyType' => 'required|integer|in:1,2,3',
                 'name' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users'
             ]);
+
+            // Calcular la fecha de finalización de la suscripción
+            $Date = date("Y/m/d");
+            $Date = date('Y-m-d', strtotime($Date. ' + '. $validated['companyType'] .' years'));
+
+            // Crear la empresa
+            $company = new Companies();
+            $company->company_CIF = $validated['companyCIF'];
+            $company->company_name = $validated['company'];
+            $company->company_end_subscription = $Date;
+            $company->save();
+
+            // Obtener el ID de la empresa recién creada
+            $company = Companies::where('company_CIF', $validated['companyCIF'])->first();
+
+            error_log('Empresa creada: ' . $company->company_id);
 
             $user = new User();
             $user->name = $validated['name'];
             $user->email = $validated['email'];
             $user->password = bcrypt('M4r1a.25');
+            $user->company_id = $company->company_id;
             $user->save();
 
             // Enviar email de bienvenida
