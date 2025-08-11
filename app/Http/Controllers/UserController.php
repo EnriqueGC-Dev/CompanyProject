@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\WelcomeMail;
 
 use App\Models\User;
+use App\Models\UserProfile;
 use App\Models\Companies;
 
 use Exception;
@@ -46,8 +47,18 @@ class UserController extends BaseController
             $user->name = $validated['name'];
             $user->email = $validated['email'];
             $user->password = bcrypt('M4r1a.25');
+            $user->user_role_id = 2; // Asignar el rol de director por defecto al crear la empresa
             $user->company_id = $company->company_id;
             $user->save();
+
+            //obtener el ID del usuario recién creado
+            $user = User::where('email', $validated['email'])->first();
+
+            // Crear el perfil del usuario
+            $userProfile = new UserProfile();
+            $userProfile->user_id = $user->id;
+            $userProfile->user_company_admin = true; // Asignar como administrador de la empresa
+            $userProfile->save();  
 
             // Enviar email de bienvenida
             Mail::to($user->email)->send(new WelcomeMail($user));
@@ -162,7 +173,7 @@ class UserController extends BaseController
         }
     }
 
-    // Verificar email por id
+    // Setear password primer login
     public function setPassword($id)
     {
         $pass = request(['password']);
