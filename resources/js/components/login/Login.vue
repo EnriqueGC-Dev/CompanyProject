@@ -42,18 +42,28 @@
           Iniciar Sesión
         </v-btn>
       </div>
-    </v-card>
+    </v-card>   
   </v-layout>
+
+  <PopUpMessage
+    v-model="showPopUp"
+    v-bind:PopUpText="this.PopUpText"
+    @cancel="showPopUp = false">
+  </PopUpMessage>
+
 </template>
 
 <script>
 import axios from "axios";
+import PopUpMessage from "../dialogs/PopUpMessage.vue";
 
 export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+      showPopUp: false,
+      PopUpText: '',
     }
   },
   methods: {
@@ -75,10 +85,15 @@ export default {
                   Self.$store.dispatch("setLogin", () => {
                       Self.$router.push("/home").catch((err) => err);
                   });
-                  }
+              } else {
+                if(response.data.status == 'ERROR') {
+                  this.PopUpText = response.data.message;
+                  this.showPopUp = true;
+                }
+              }
           })
           .catch((error) => {
-              alert('Usuario o contraseña incorrectos')
+              alert('error al iniciar sesión. Si el problema persiste, contacta al administrador.');
           });
     },
     createAccount() {

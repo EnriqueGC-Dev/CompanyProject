@@ -42,8 +42,6 @@ class UserController extends BaseController
             // Obtener el ID de la empresa recién creada
             $company = Companies::where('company_CIF', $validated['companyCIF'])->first();
 
-            error_log('Empresa creada: ' . $company->company_id);
-
             $user = new User();
             $user->name = $validated['name'];
             $user->email = $validated['email'];
@@ -82,9 +80,20 @@ class UserController extends BaseController
                 return response()->json([
                     'status' => 'ERROR',
                     'message' => 'Debes verificar tu correo electrónico antes de iniciar sesión.'
-                ], 403);
+                ], 201);
             }
 
+            // Verificar que la fecha de finalización de la suscripción no haya expirado
+            $company = Companies::find($user->company_id);
+            if ($company && strtotime($company->company_end_subscription) < time()) {
+                Auth::logout();
+                return response()->json([
+                    'status' => 'ERROR',
+                    'message' => 'Tu suscripción ha expirado. Por favor, contacta con el administrador.'
+                ], 201);
+            }
+
+            // Iniciar sesión exitosamente
             return response()->json([
                 'status' => 'OK',
                 'server' => $_SERVER,
@@ -92,6 +101,7 @@ class UserController extends BaseController
                 'environment' => $_ENV
             ], 200);
 
+            //Error al iniciar sesión sin controlar
         } else {
             return response()->json([
                 'status' => 'ERROR'

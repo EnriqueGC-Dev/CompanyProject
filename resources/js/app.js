@@ -23,6 +23,7 @@ import Home from './components/home/Home.vue';
 import Home1 from './components/home/Home1.vue';
 
 import FirstLogin from './components/dialogs/FirstLogin.vue';
+import PopUpMessage from './components/dialogs/PopUpMessage.vue';
 
 import DateSelector from './components/specialComponents/DateSelector.vue';
 
@@ -69,6 +70,7 @@ app.component('Login', Login)
 app.component('Registro', Registro)
 
 app.component('FirstLogin', FirstLogin)
+app.component('PopUpMessage', PopUpMessage)
 
 app.component('Navbar', Navbar)
 app.component('Sidebar', Sidebar)
