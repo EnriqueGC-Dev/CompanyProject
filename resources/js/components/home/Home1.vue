@@ -3,7 +3,7 @@
       class="mx-auto"
       color="surface-variant"
       image="https://cdn.vuetifyjs.com/docs/images/cards/dark-beach.jpg"
-      max-width="340"
+      width="80%"
       subtitle="Take a walk down the beach"
       title="CARD LEFT"
     >

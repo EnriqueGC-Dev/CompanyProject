@@ -1,18 +1,16 @@
 <template>
-  <v-app class="bg-grey-lighten-3" >
-    <v-main>
+    <v-app class="bg-grey-lighten-3">
       <FirstLogin v-if="$store.state.user_firstlogin !== true"></FirstLogin>
-      <v-layout v-else style="height: 100vh;" class="rounded rounded-md border ">
-        <Navbar v-if="$store.state.authentication == true" @OpenCloseNavbar="OpenCloseNavbar"></Navbar>
-        <Sidebar v-if="$store.state.authentication == true" v-model="vShowNavbar"></Sidebar>
-          <v-main class="d-flex align-center justify-center">
-            <v-container fluid> 
-              <router-view></router-view>
-            </v-container>
-          </v-main>
-      </v-layout>  
-     </v-main>
-  </v-app>
+      <Sidebar v-if="$store.state.authentication == true" v-model="vShowNavbar"></Sidebar>
+      <Navbar v-if="$store.state.authentication == true" @OpenCloseNavbar="OpenCloseNavbar"></Navbar>
+
+      <v-main class="d-flex align-center justify-center">
+        <v-container fluid style="height: calc(100vh - 64px); overflow-y: auto;">
+          <router-view></router-view>
+        </v-container>
+      </v-main>
+
+    </v-app>
 </template>
 
 <script>

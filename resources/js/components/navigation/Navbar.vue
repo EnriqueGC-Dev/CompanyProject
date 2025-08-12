@@ -1,10 +1,10 @@
 <template>
-    <v-app-bar :elevation="1" class="bg-grey-lighten-3">
-      <v-app-bar-nav-icon @click="OpenCloseNavbar()"></v-app-bar-nav-icon>
+  <v-app-bar>
+    <v-app-bar-nav-icon @click="OpenCloseNavbar()"></v-app-bar-nav-icon>
       <v-btn @click="ToInicio()">inicio</v-btn>
       <v-btn @click="ToProyectos()">proyectos</v-btn>
       <v-btn @click="ToEmpleados()">empleados</v-btn>
-    </v-app-bar>
+  </v-app-bar>
 </template>
 
 <script>
