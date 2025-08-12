@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-expand-transition>
-      <div v-if="showPicker">
+    <v-dialog v-model="showPicker" width="auto">
+      <div>
         <v-date-picker
           v-model="selectedDate"
           @update:model-value="onDateSelected"
@@ -11,22 +11,30 @@
           max-height="420"
         />
       </div>
-    </v-expand-transition>
-
+    </v-dialog>
     <v-text-field
+      :label="label"
       v-model="formattedDate"
-      label="Selecciona una fecha"
       readonly
+      variant="outlined"
+      color="primary"
+      required
+      clearable
       @click="showPicker = true"
-      prepend-icon="mdi-calendar"
-      class="mt-4"
     />
   </div>
 </template>
 
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, } from 'vue'
+
+const props = defineProps({
+  label: {
+    type: String,
+    default: 'Seleccionar fecha'
+  }
+})
 
 const showPicker = ref(false)
 const selectedDate = ref(null)
