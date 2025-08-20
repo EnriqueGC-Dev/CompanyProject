@@ -51,4 +51,12 @@ class User extends Authenticatable
             'user_active' => 'boolean',
         ];
     }
+
+    /**
+     * Get the profile associated with the user.
+     */
+    public function profile()
+    {
+        return $this->hasOne(UserProfile::class, 'user_id');
+    }
 }

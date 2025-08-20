@@ -157,20 +157,7 @@ class UserController extends BaseController
     // Obtener el objeto User por id
     public function userById($id)
     {
-        $user = User::select(
-            'users.id',
-            'users.name',
-            'users.email',
-            'users.user_role_id',
-            'users.user_active',
-            'user_profiles.user_photo',
-            'user_profiles.user_phone',
-            'user_profiles.user_birthday',
-            'user_profiles.user_company_admin'
-            )
-            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
-            ->where('users.id', $id)
-            ->first();
+        $user = User::with('profile')->find($id);
 
         // Verificar si el usuario existe
         if (!$user) {
@@ -179,9 +166,23 @@ class UserController extends BaseController
                 'message' => 'Usuario no encontrado'
             ], 404);
         }
+
+        // Crear un array con los datos del usuario y su perfil
+        $userData = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'user_role_id' => $user->user_role_id,
+            'user_active' => $user->user_active,
+            'user_photo' => $user->profile->user_photo ?? null,
+            'user_phone' => $user->profile->user_phone ?? null,
+            'user_birthday' => $user->profile->user_birthday ?? null,
+            'user_company_admin' => $user->profile->user_company_admin ?? false,
+        ];
+
         return response()->json([
             'status' => 'OK',
-            'user' => $user
+            'user' => $userData
         ], 200);
     }
 
