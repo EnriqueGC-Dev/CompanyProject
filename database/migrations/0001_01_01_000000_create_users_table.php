@@ -21,6 +21,7 @@ return new class extends Migration
             $table->foreignId('company_id')->nullable();
             $table->foreignId('user_role_id')->nullable();
             $table->boolean('first_log')->default(false);
+            $table->boolean('user_active')->default(true);
             $table->timestamps();
         });
 

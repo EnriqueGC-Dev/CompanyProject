@@ -9,63 +9,16 @@
           </v-card-title>
           
           <v-card-text class="mt-4">
-              <v-row> <!-- Fila para los datos del usuario   -->
-                <v-col cols="6"> <!-- Columna para la imagen de perfil -->
-                  <v-card fluid>
-                      <img v-if="!image_url" src="../../images/no-profile-picture-icon.jpg" class="rounded-circle" style="width: 100%; height: auto; object-fit: cover;">
-                      <v-img
-                          v-if="image_url"
-                          :src="image_url"
-                          class="rounded-circle"
-                          :aspect-ratio="1"
-                          style="width: 100%; height: auto; object-fit: cover;">
-                        </v-img>
-                  </v-card>
-                  <v-file-input 
-                      type="file" id="file" ref="file" v-on:change="handleFileUpload()"
-                      style="display: none"
-                      v-model="image_name"
-                  >
-                  </v-file-input>
-                </v-col>
-                <v-col cols="6"> <!-- Columna para la información del usuario -->
-                  <h3 class="text-h6 mb-4">Información de Usuario:</h3> 
-                  <v-text-field
-                    label="Nombre"
-                    variant="outlined"
-                    color="primary"
-                    required
-                  ></v-text-field>
-                  <v-text-field
-                    label="Número de teléfono"
-                    variant="outlined"
-                    color="primary"
-                    required
-                  ></v-text-field> 
-                  <DateSelector
-                    label="Fecha de nacimiento"
-                    variant="outlined"
-                    color="primary"
-                    required
-                    dense>
-                  </DateSelector>  
-                  <v-select
-                    label="Departamento"
-                    variant="outlined"
-                    color="primary"
-                    :items="['Masculino', 'Femenino', 'Otro']"
-                    required>
-                  </v-select>
-                </v-col>
+              <v-row>
+                <v-col> <v-btn block variant="flat" @click.stop="viewPage='GENERAL'"     :color = "viewPage=='GENERAL' ? 'primary' : '' ">GENERAL</v-btn> </v-col>
+                <v-col> <v-btn block variant="flat" @click.stop="viewPage='CONTROL'"     :color = "viewPage=='CONTROL' ? 'primary' : '' ">CONTROL</v-btn> </v-col>
+              </v-row>
+              <v-row> <!-- Fila para la ventana de componente   -->
+                <PerfilGeneral v-if="viewPage=='GENERAL'" v-bind:User="User"></PerfilGeneral>
+                <PerfilControl v-if="viewPage=='CONTROL'" v-bind:User="User"></PerfilControl>
               </v-row>
               <v-row> <!-- Fila para los botones de acción -->
                 <v-col cols="6">
-                  <v-row class="mt-3">
-                    <v-spacer></v-spacer>
-                      <v-col cols="6" v-if="!image_url"> <v-btn class="primary" @click="seleccionaImagen()">SUBIR IMAGEN</v-btn> </v-col>
-                      <v-col cols="6" v-if="image_url"> <v-btn color="cancel" @click="borraImagen()">ELIMINAR IMAGEN</v-btn> </v-col>
-                    <v-spacer></v-spacer>
-                  </v-row>
                 </v-col>
                 <v-col cols="6">
                   <v-row class="mt-3">
@@ -74,7 +27,7 @@
                       <v-btn variant="outlined" color="primary" block>CANCELAR</v-btn>
                     </v-col>
                     <v-col cols="4">
-                      <v-btn class="primary" block>GUARDAR</v-btn>
+                      <v-btn color="primary" block>GUARDAR</v-btn>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -88,36 +41,41 @@
 
 
 <script>
+import APIUser from "../../interfaces/User";
+import axios from "axios";
+
 export default {
   name: 'Perfil',
   data() {
     return {
-      image_url: null,
-      image_name: null,
+      viewPage: 'GENERAL', // Variable para controlar la vista actual
+      User: Object.assign({}, APIUser.EmptyUser) // Instancia del usuario
     }
   },
   mounted() {
-
+    this.initialize();
   },
   methods: {
-    seleccionaImagen() {
-        console.log("Selecciona imagen");
-
-          this.$refs.file.click();
+    initialize: function() {
+        this.getUserData();
       },
 
-      handleFileUpload(){
-          console.log("handleFileUpload");
-          this.image_url = URL.createObjectURL(this.image_name)
-      },
+    
+    getUserData: function() { // Método para obtener los datos del usuario
+      let id = this.$store.state.user_id;
 
-      borraImagen() {
-          this.image_url = null;
-          this.image_name = null;
+      axios
+        .get(`/api/user/userdata/${id}`)
+        .then((response) => {
+          this.User = response.data.user;
+          console.log(this.User);
+        })
+        .catch((error) => {
+            alert('Error al cargar los proyectos de la compañia')
+        });
       },
-    }  
-
-  }
+  }  
+}
 </script>
 
 <style scoped>

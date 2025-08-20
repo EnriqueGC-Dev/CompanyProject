@@ -18,5 +18,7 @@ Route::post('/api/user/login', [UserController::class, 'login']);
 Route::post('/api/user/logout', [UserController::class, 'logout']);
 Route::get('/api/user/data', [UserController::class, 'user']);
 
+
+Route::get('/api/user/userdata/{id}', [UserController::class, 'userById']);
 Route::get('/api/user/verify-email/{id}', [UserController::class, 'verifyEmail']);
 Route::post('/api/user/setPassword/{id}', [UserController::class, 'setPassword']);

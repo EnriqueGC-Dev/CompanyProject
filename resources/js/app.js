@@ -19,6 +19,10 @@ import Registro from './components/login/Registro.vue';
 import Navbar from './components/navigation/Navbar.vue';
 import Sidebar from './components/navigation/Sidebar.vue';
 
+import Perfil from './components/profile/Perfil.vue';
+import PerfilGeneral from './components/profile/PerfilGeneral.vue';
+import PerfilControl from './components/profile/PerfilControl.vue';
+
 import Home from './components/home/Home.vue';
 import Home1 from './components/home/Home1.vue';
 
@@ -74,6 +78,10 @@ app.component('PopUpMessage', PopUpMessage)
 
 app.component('Navbar', Navbar)
 app.component('Sidebar', Sidebar)
+
+app.component('Perfil', Perfil)
+app.component('PerfilGeneral', PerfilGeneral)
+app.component('PerfilControl', PerfilControl)
 
 app.component('Home', Home)
 app.component('Home1', Home1)

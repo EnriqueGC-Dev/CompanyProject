@@ -154,6 +154,37 @@ class UserController extends BaseController
         return response()->json($json);
     }
 
+    // Obtener el objeto User por id
+    public function userById($id)
+    {
+        $user = User::select(
+            'users.id',
+            'users.name',
+            'users.email',
+            'users.user_role_id',
+            'users.user_active',
+            'user_profiles.user_photo',
+            'user_profiles.user_phone',
+            'user_profiles.user_birthday',
+            'user_profiles.user_company_admin'
+            )
+            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+            ->where('users.id', $id)
+            ->first();
+
+        // Verificar si el usuario existe
+        if (!$user) {
+            return response()->json([
+                'status' => 'ERROR',
+                'message' => 'Usuario no encontrado'
+            ], 404);
+        }
+        return response()->json([
+            'status' => 'OK',
+            'user' => $user
+        ], 200);
+    }
+
     // Verificar email por id
     public function verifyEmail($id)
     {

@@ -24,6 +24,7 @@ class User extends Authenticatable
         'first_log',
         'company_id',
         'user_role_id',
+        'user_active',
     ];
 
     /**
@@ -47,6 +48,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'first_log' => 'boolean',
+            'user_active' => 'boolean',
         ];
     }
 }

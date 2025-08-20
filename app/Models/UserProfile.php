@@ -16,6 +16,7 @@ class UserProfile extends Model
         'user_id',
         'user_photo',
         'user_phone',
+        'user_birthday',
         'user_company_admin',
     ];
 
@@ -27,6 +28,8 @@ class UserProfile extends Model
     protected $casts = [
         'user_id' => 'integer',
         'user_phone' => 'integer',
+        'user_birthday' => 'date',
+        'user_company_admin' => 'boolean',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users', 'id');
             $table->string('user_photo')->nullable()->unique();
             $table->integer('user_phone')->nullable();
-            $table->string('user_company_admin')->default(false);
+            $table->date('user_birthday')->nullable();
+            $table->boolean('user_company_admin')->default(false);
             $table->timestamps();
         });
     }
