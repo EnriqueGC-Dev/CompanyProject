@@ -22,3 +22,4 @@ Route::get('/api/user/data', [UserController::class, 'user']);
 Route::get('/api/user/userdata/{id}', [UserController::class, 'userById']);
 Route::get('/api/user/verify-email/{id}', [UserController::class, 'verifyEmail']);
 Route::post('/api/user/setPassword/{id}', [UserController::class, 'setPassword']);
+Route::post('/api/user/uploadphoto', [UserController::class, 'uploadPhoto']);

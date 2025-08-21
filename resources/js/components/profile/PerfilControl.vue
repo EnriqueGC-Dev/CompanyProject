@@ -6,11 +6,11 @@
             <v-card-text>
               <v-row>
                 <v-spacer></v-spacer>
-                <v-switch v-model="User.user_active" label="Usuario Activo"></v-switch>
+                <v-switch v-model="User.user_active" label="Usuario Activo" baseColor="cancel" color="success"></v-switch>
               </v-row>
               <v-row>
                 <v-spacer></v-spacer>
-                <v-switch v-model="User.user_company_admin" label="Usuario Administrador"></v-switch>
+                <v-switch v-model="User.user_company_admin" label="Usuario Administrador" baseColor="cancel" color="success"></v-switch>
               </v-row>
               <v-select
                 label="Departamento"

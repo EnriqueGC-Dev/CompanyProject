@@ -2,13 +2,13 @@
     <v-col cols="6"> <!-- Columna para la imagen de perfil -->
     <v-card fluid>
         <img 
-            v-if="!image_url" 
+            v-if="!User.user_photo" 
             src="../../images/no-profile-picture-icon.jpg" 
             class="rounded-circle mt-2" 
             style="width: 100%; height: auto; object-fit: cover;">
         <v-img
-            v-if="image_url"
-            :src="image_url"
+            v-if="User.user_photo"
+            :src="User.user_photo"
             class="rounded-circle mt-2"
             :aspect-ratio="1"
             style="width: 100%; height: auto; object-fit: cover;">
@@ -22,8 +22,8 @@
     </v-file-input>
     <v-row class="mt-3">
         <v-spacer></v-spacer>
-            <v-col cols="6" v-if="!image_url"> <v-btn color="primary" @click="seleccionaImagen()">SUBIR IMAGEN</v-btn> </v-col>
-            <v-col cols="6" v-if="image_url"> <v-btn color="cancel" @click="borraImagen()">ELIMINAR IMAGEN</v-btn> </v-col>
+            <v-col cols="8" v-if="!User.user_photo"> <v-btn color="primary" @click="seleccionaImagen()">SUBIR IMAGEN</v-btn> </v-col>
+            <v-col cols="8" v-if="User.user_photo"> <v-btn color="cancel" @click="borraImagen()">ELIMINAR IMAGEN</v-btn> </v-col>
         <v-spacer></v-spacer>
     </v-row>
     </v-col>
@@ -43,6 +43,7 @@
         required
     ></v-text-field> 
     <DateSelector
+        v-model="User.user_birthday"
         label="Fecha de nacimiento"
         variant="outlined"
         color="primary"
@@ -58,7 +59,6 @@ export default {
   props: ['User'],
   data() {
     return {
-      image_url: null,
       image_name: null,
     }
   },
@@ -71,11 +71,11 @@ export default {
       },
 
       handleFileUpload(){
-          this.image_url = URL.createObjectURL(this.image_name)
+          this.User.user_photo = URL.createObjectURL(this.image_name)
       },
 
       borraImagen() {
-          this.image_url = null;
+          this.User.user_photo = null;
           this.image_name = null;
       },
   }  

@@ -138,10 +138,24 @@ class UserController extends BaseController
         $user = $request->user();
 
         if ($user instanceof User) {
-            $json = array_merge(
-                ['status' => 'OK'],
-                $user->toArray(),
-            );
+            $user->load('profile');
+            $userData = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'user_role_id' => $user->user_role_id,
+                'user_active' => $user->user_active,
+                'user_first_log' => $user->first_log,
+                'user_photo' => $user->profile->user_photo ?? null,
+                'user_phone' => $user->profile->user_phone ?? null,
+                'user_birthday' => $user->profile->user_birthday ?? null,
+                'user_company_admin' => $user->profile->user_company_admin ?? false,
+            ];
+
+            $json = [
+                'status' => 'OK',
+                'user' => $userData
+            ];
         } else {
             $json = [
                 'status' => 'ERROR',
@@ -226,5 +240,47 @@ class UserController extends BaseController
                 'environment' => $_ENV
             ], 200);
 
+    }
+
+    public function uploadPhoto(Request $request)
+    {
+        $user = Auth::user();
+
+        if (!$user) {
+            return response()->json([
+                'status' => 'ERROR',
+                'message' => 'Usuario no autenticado'
+            ], 401);
+        }
+
+        error_log($_FILES['photo']['name'] ?? 'No photo uploaded');
+        if ($_FILES['photo']) {
+            $file = $_FILES['photo']['name'];
+            $filename = request()['uuid'] . '.jpg'; // Guardar con el ID del usuario
+            $path = public_path('uploads/photos');
+
+            // Asegurarse de que el directorio exista
+            if (!file_exists($path)) {
+                mkdir($path, 0755, true);
+            }
+
+            // Mover el archivo al directorio
+            $file->move($path, $filename);
+
+            // Actualizar la ruta de la foto en el perfil del usuario
+            $user->profile->user_photo = 'uploads/photos/' . $filename;
+            $user->profile->save();
+
+            return response()->json([
+                'status' => 'OK',
+                'message' => 'Foto subida correctamente',
+                'photo_path' => $user->profile->user_photo
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'ERROR',
+            'message' => 'No se ha subido ninguna foto'
+        ], 400);
     }
 }
