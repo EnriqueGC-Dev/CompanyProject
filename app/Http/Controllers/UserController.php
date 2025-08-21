@@ -253,10 +253,9 @@ class UserController extends BaseController
             ], 401);
         }
 
-        error_log($_FILES['photo']['name'] ?? 'No photo uploaded');
-        if ($_FILES['photo']) {
-            $file = $_FILES['photo']['name'];
-            $filename = request()['uuid'] . '.jpg'; // Guardar con el ID del usuario
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $filename = $request->uuid . '.jpg'; // Guardar con el ID del usuario
             $path = public_path('uploads/photos');
 
             // Asegurarse de que el directorio exista

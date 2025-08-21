@@ -71,14 +71,19 @@ export default {
       },
 
       handleFileUpload(){
-          this.User.user_photo = URL.createObjectURL(this.image_name)
+          this.image_name = this.$refs.file.files[0];
+          this.User.user_photo = URL.createObjectURL(this.image_name);
+          // Emit the file object to the parent component
+          this.$emit('update:photoFile', this.image_name);
       },
 
       borraImagen() {
           this.User.user_photo = null;
           this.image_name = null;
+          // Emit null to the parent component
+          this.$emit('update:photoFile', null);
       },
-  }  
+  }
 }
 </script>
 

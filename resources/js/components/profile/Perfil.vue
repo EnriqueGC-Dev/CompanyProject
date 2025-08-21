@@ -14,7 +14,7 @@
                 <v-col> <v-btn block variant="flat" @click.stop="viewPage='CONTROL'"     :color = "viewPage=='CONTROL' ? 'primary' : 'thirth' ">CONTROL</v-btn> </v-col>
               </v-row>
               <v-row> <!-- Fila para la ventana de componente   -->
-                <PerfilGeneral v-if="viewPage=='GENERAL'" v-bind:User="User"></PerfilGeneral>
+                <PerfilGeneral v-if="viewPage=='GENERAL'" v-bind:User="User" @update:photoFile="updatePhotoFile"></PerfilGeneral>
                 <PerfilControl v-if="viewPage=='CONTROL'" v-bind:User="User"></PerfilControl>
               </v-row>
               <v-row> <!-- Fila para los botones de acción -->
@@ -49,7 +49,8 @@ export default {
   data() {
     return {
       viewPage: 'GENERAL', // Variable para controlar la vista actual
-      User: Object.assign({}, APIUser.EmptyUser) // Instancia del usuario
+      User: Object.assign({}, APIUser.EmptyUser), // Instancia del usuario
+      photoFile: null // To store the actual file object
     }
   },
   mounted() {
@@ -104,7 +105,8 @@ export default {
     uploadPhoto: function(myuuid) { // Método para subir la foto del usuario
       let formData = new FormData();
       console.log("Subiendo foto de usuario:", this.User.user_photo);
-      formData.append('photo', this.User.user_photo);
+      // Send the actual file object instead of the URL
+      formData.append('photo', this.photoFile);
       formData.append('uuid', myuuid);
 
       axios.post("/api/user/uploadphoto", formData, {
@@ -118,8 +120,13 @@ export default {
       .catch(error => {
         console.error("Error al subir la foto:", error);
       });
+    },
+
+    updatePhotoFile: function(file) {
+      // Update the photoFile property when it changes
+      this.photoFile = file;
     }
-  }  
+  }
 }
 </script>
 
