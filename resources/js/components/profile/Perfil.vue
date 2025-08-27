@@ -83,7 +83,7 @@ export default {
     save: function() { // Método para guardar los cambios
       let id = this.$store.state.user_id;
 
-      if (this.User.user_photo !== this.$store.state.user_photo) {
+      if (this.User.user_photo !== this.$store.state.user_photo && this.User.user_photo !== null) { // Subida de foto
         let myuuid = crypto.randomUUID();
         this.uploadPhoto(myuuid);
       }

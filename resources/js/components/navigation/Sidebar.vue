@@ -2,7 +2,18 @@
   <v-navigation-drawer style="height: 100vh;"  v-model="vShowNavbar" app permanent class="bg-grey-lighten-3">
             <v-list density="compact" :elevation="3">
               <v-list-item class="mt-4" >
-                  <img src="https://randomuser.me/api/portraits/men/24.jpg">                    
+                <img 
+                  v-if="!$store.state.user_photo" 
+                  src="../../images/no-profile-picture-icon.jpg" 
+                  class="rounded-circle mt-2" 
+                  style="width: 100%; height: auto; object-fit: cover;">
+                <v-img
+                  v-if="$store.state.user_photo"
+                  :src="$store.state.user_photo"
+                  class="rounded-circle mt-2"
+                  :aspect-ratio="1"
+                  style="width: 100%; height: auto; object-fit: cover;">
+                </v-img>                    
               </v-list-item>
               <v-list-item
                   :title=$store.state.user_name
